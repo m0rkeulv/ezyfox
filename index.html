@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ezyfox by youngmonkeys</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Ezyfox</h1>
+      <h2 class="project-tagline">This project support to create a server side game application more efficiently and more quickly (user smartfox server engine)</h2>
+      <a href="https://github.com/youngmonkeys/ezyfox" class="btn">View on GitHub</a>
+      <a href="https://github.com/youngmonkeys/ezyfox/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/youngmonkeys/ezyfox/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="ezyfox" class="anchor" href="#ezyfox" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ezyfox</h1>
+
+<h2>
+<a id="ezyfox-core" class="anchor" href="#ezyfox-core" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ezyfox-core</h2>
+
+<p><a href="https://travis-ci.org/youngmonkeys/ezyfox-core"><img src="https://travis-ci.org/youngmonkeys/ezyfox-core.svg?branch=master" alt="Build Status"></a>
+<a href="https://www.versioneye.com/user/projects/5749e142138081000ea4f078"><img src="https://www.versioneye.com/user/projects/5749e142138081000ea4f078/badge.svg?style=flat" alt="Dependency Status"></a>
+<a href="https://coveralls.io/github/youngmonkeys/ezyfox-core?branch=master"><img src="https://coveralls.io/repos/github/youngmonkeys/ezyfox-core/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/com.tvd12/ezyfox-core"><img src="https://maven-badges.herokuapp.com/maven-central/com.tvd12/ezyfox-core/badge.svg" alt="Maven Central"></a>
+<a href="http://www.javadoc.io/doc/com.tvd12/ezyfox-core"><img src="https://javadoc-emblem.rhcloud.com/doc/com.tvd12/ezyfox-core/badge.svg" alt="Javadoc"></a></p>
+
+<h2>
+<a id="ezyfox-sfs2x" class="anchor" href="#ezyfox-sfs2x" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ezyfox-sfs2x</h2>
+
+<p><a href="https://travis-ci.org/youngmonkeys/ezyfox-sfs2x"><img src="https://travis-ci.org/youngmonkeys/ezyfox-sfs2x.svg?branch=master" alt="Build Status"></a>
+<a href="https://www.versioneye.com/user/projects/574d34c8193d44000d50dd82"><img src="https://www.versioneye.com/user/projects/574d34c8193d44000d50dd82/badge.svg?style=flat" alt="Dependency Status"></a>
+<a href="https://coveralls.io/github/youngmonkeys/ezyfox-sfs2x?branch=master"><img src="https://coveralls.io/repos/github/youngmonkeys/ezyfox-sfs2x/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/com.tvd12/ezyfox-sfs2x"><img src="https://maven-badges.herokuapp.com/maven-central/com.tvd12/ezyfox-sfs2x/badge.svg" alt="Maven Central"></a>
+<a href="http://www.javadoc.io/doc/com.tvd12/ezyfox-sfs2x"><img src="https://javadoc-emblem.rhcloud.com/doc/com.tvd12/ezyfox-sfs2x/badge.svg" alt="Javadoc"></a></p>
+
+<h1>
+<a id="synopsis" class="anchor" href="#synopsis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Synopsis</h1>
+
+<p>This project support to create a server side game application more efficiently and more quickly (user smartfox server engine)</p>
+
+<h1>
+<a id="code-example" class="anchor" href="#code-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code Example</h1>
+
+<p><strong>1. Handle server ready event</strong></p>
+
+<div class="highlight highlight-source-java"><pre>  @ServerEventHandler(event <span class="pl-k">=</span> <span class="pl-smi">ServerEvent</span><span class="pl-c1"><span class="pl-k">.</span>SERVER_READY</span>)
+  <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ServerReadyHandler</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">handle</span>(<span class="pl-smi">AppContext</span> <span class="pl-v">context</span>) {
+        context<span class="pl-k">.</span>command(<span class="pl-smi">CreateRoom</span><span class="pl-k">.</span>class)
+            .agents(<span class="pl-smi">RoomProvider</span><span class="pl-k">.</span>lobby())<span class="pl-k">.</span>execute();
+        <span class="pl-k">MyRoom</span>[] rooms <span class="pl-k">=</span> <span class="pl-smi">RoomProvider</span><span class="pl-k">.</span>gameRooms(); 
+        context<span class="pl-k">.</span>command(<span class="pl-smi">CreateRoom</span><span class="pl-k">.</span>class)<span class="pl-k">.</span>agents(rooms)<span class="pl-k">.</span>execute();
+        <span class="pl-k">for</span>(<span class="pl-smi">MyRoom</span> room <span class="pl-k">:</span> rooms) {
+            context<span class="pl-k">.</span>command(<span class="pl-smi">UpdateRoom</span><span class="pl-k">.</span>class)
+                .toClient(<span class="pl-c1">true</span>)<span class="pl-k">.</span>room(room)<span class="pl-k">.</span>execute();
+        }
+    }
+}</pre></div>
+
+<p><strong>2. Handle user join zone event</strong></p>
+
+<div class="highlight highlight-source-java"><pre>  @ServerEventHandler(event <span class="pl-k">=</span> <span class="pl-smi">ServerEvent</span><span class="pl-c1"><span class="pl-k">.</span>USER_JOIN_ZONE</span>)
+  <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">UserJoinZoneHandler</span> {
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">handle</span>(<span class="pl-smi">AppContext</span> <span class="pl-v">context</span>, <span class="pl-smi">ApiZone</span> <span class="pl-v">zone</span>, <span class="pl-smi">MyUser</span> <span class="pl-v">user</span>) {
+        context<span class="pl-k">.</span>command(<span class="pl-smi">Log</span><span class="pl-k">.</span>class)<span class="pl-k">.</span>from(<span class="pl-v">this</span>)<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>user <span class="pl-pds">"</span></span> <span class="pl-k">+</span> user<span class="pl-k">.</span>getName() 
+              <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> join zone <span class="pl-pds">"</span></span> <span class="pl-k">+</span> zone<span class="pl-k">.</span>getName());
+        context<span class="pl-k">.</span>command(<span class="pl-smi">JoinRoom</span><span class="pl-k">.</span>class)
+            .roomToJoin(<span class="pl-s"><span class="pl-pds">"</span>Lobby<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>user(user)<span class="pl-k">.</span>execute();
+    }
+  }</pre></div>
+
+<p><strong>3. Handle user join room event</strong></p>
+
+<div class="highlight highlight-source-java"><pre>  @RoomName(<span class="pl-s"><span class="pl-pds">"</span>v<span class="pl-pds">"</span></span>)
+  @ServerEventHandler(event <span class="pl-k">=</span> <span class="pl-smi">ServerEvent</span><span class="pl-c1"><span class="pl-k">.</span>USER_JOIN_ROOM</span>)
+  <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">UserJoinRoomHandler</span> {
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">handle</span>(<span class="pl-smi">AppContext</span> <span class="pl-v">context</span>, <span class="pl-smi">MyRoom</span> <span class="pl-v">room</span>, <span class="pl-smi">MyUser</span> <span class="pl-v">user</span>) {
+        context<span class="pl-k">.</span>command(<span class="pl-smi">Log</span><span class="pl-k">.</span>class)<span class="pl-k">.</span>from(<span class="pl-v">this</span>)<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>user <span class="pl-pds">"</span></span> <span class="pl-k">+</span> user<span class="pl-k">.</span>getName() 
+              <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> joined room <span class="pl-pds">"</span></span> <span class="pl-k">+</span> room<span class="pl-k">.</span>getName());
+        context<span class="pl-k">.</span>command(<span class="pl-smi">Response</span><span class="pl-k">.</span>class)
+            .command(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>recipient(user)<span class="pl-k">.</span>data(room)<span class="pl-k">.</span>execute();
+    }
+
+}</pre></div>
+
+<p><strong>4. Listen a request from client and auto response</strong></p>
+
+<p>Let's say you want to listen a "bet" request from client and you also you want to response to that client, you can do like this:</p>
+
+<div class="highlight highlight-source-java"><pre>  @<span class="pl-smi">Data</span>
+  @<span class="pl-smi">ClientResponseHandler</span> <span class="pl-c">// use this annotation to auto response to client</span>
+  @ClientRequestListener(command <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>) <span class="pl-c">// use this annotation to listen a request from client</span>
+  <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">BetRequestListener</span> {
+    <span class="pl-k">@RequestParam</span>(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>)
+    <span class="pl-k">@ResponseParam</span>(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>)
+    <span class="pl-k">private</span> <span class="pl-k">int</span> money;
+
+    <span class="pl-k">@RequestParam</span>(<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>)
+    <span class="pl-k">@ResponseParam</span>(<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>)
+    <span class="pl-k">private</span> <span class="pl-k">int</span> roomId;
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">execute</span>(<span class="pl-smi">AppContext</span> <span class="pl-v">context</span>, <span class="pl-smi">VideoPokerUser</span> <span class="pl-v">user</span>) {
+        <span class="pl-smi">MyRoom</span> room <span class="pl-k">=</span> 
+                context<span class="pl-k">.</span>command(<span class="pl-smi">FindRoom</span><span class="pl-k">.</span>class)<span class="pl-k">.</span>by(roomId);
+        context<span class="pl-k">.</span>command(<span class="pl-smi">Log</span><span class="pl-k">.</span>class)<span class="pl-k">.</span>from(<span class="pl-v">this</span>)<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>user {} has just betted {} chips<span class="pl-pds">"</span></span>, 
+                user<span class="pl-k">.</span>getName(), btype<span class="pl-k">.</span>getMoney());
+        user<span class="pl-k">.</span>decreaseMoney(btype<span class="pl-k">.</span>getMoney());
+        user<span class="pl-k">.</span>increaseGameMoney(btype<span class="pl-k">.</span>getMoney());
+        context<span class="pl-k">.</span>command(<span class="pl-smi">UpdateUser</span><span class="pl-k">.</span>class)
+            .toClient(<span class="pl-c1">true</span>)<span class="pl-k">.</span>user(user)<span class="pl-k">.</span>execute();
+        context<span class="pl-k">.</span>command(<span class="pl-smi">UpdateRoom</span><span class="pl-k">.</span>class)
+            .room(room)<span class="pl-k">.</span>toClient(<span class="pl-c1">true</span>)<span class="pl-k">.</span>execute();
+    }
+
+}
+</pre></div>
+
+<p><strong>5. Intercept a request from client</strong></p>
+
+<p>Let's say you need validate a parameter in a request from client (i.e money in "bet" request) you can do:</p>
+
+<div class="highlight highlight-source-java"><pre>  @<span class="pl-smi">Data</span>
+  @ClientRequestListener(command <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>, priority <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>)
+  <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">BetRequestInterceptor</span> {
+
+    <span class="pl-k">@RequestParam</span>(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>)
+    <span class="pl-k">@ResponseParam</span>(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>)
+    <span class="pl-k">private</span> <span class="pl-k">int</span> money;
+
+    <span class="pl-k">@RequestParam</span>(<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>)
+    <span class="pl-k">@ResponseParam</span>(<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>)
+    <span class="pl-k">private</span> <span class="pl-k">int</span> roomId;
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">execute</span>(<span class="pl-smi">AppContext</span> <span class="pl-v">context</span>, <span class="pl-smi">VideoPokerUser</span> <span class="pl-v">user</span>) <span class="pl-k">throws</span> <span class="pl-smi">Exception</span> {
+        <span class="pl-k">if</span>(money <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>) {
+            context<span class="pl-k">.</span>command(<span class="pl-smi">Response</span><span class="pl-k">.</span>class)
+                .command(<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>recipient(user)<span class="pl-k">.</span>execute();
+            <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-smi">BadRequestException</span>();
+        }
+    }
+
+}</pre></div>
+
+<h1>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Motivation</h1>
+
+<p>We have used smartfox server engine, we must use key-value object like SFSObject, SFSUser, SFSRoom e.t.c, they make our source code too complex, hard to read, hard to map, example:</p>
+
+<div class="highlight highlight-source-java"><pre>  <span class="pl-c">// public user var</span>
+  <span class="pl-smi">UserVariable</span> avatarPic <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">SFSUserVariable</span>(<span class="pl-s"><span class="pl-pds">"</span>pic<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>GonzoTheGreat.jpg<span class="pl-pds">"</span></span>);
+
+  <span class="pl-c">// private user var</span>
+  <span class="pl-smi">UserVariable</span> dbId <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">SFSUserVariable</span>(<span class="pl-s"><span class="pl-pds">"</span>dbId<span class="pl-pds">"</span></span>, databaseId);
+  dbId<span class="pl-k">.</span>setHidden(<span class="pl-c1">true</span>);
+
+  <span class="pl-c">// Set variables via the server side API</span>
+  getApi()<span class="pl-k">.</span>setUserVariables(user, <span class="pl-smi">Arrays</span><span class="pl-k">.</span>asList(avatarPic, dbId));</pre></div>
+
+<p>We must spend a lot of time to declare, init variables. Some time we also have two or three user agent for each game, and mapping an user agent to key-value object is hard. We think using POJO is good idea, so we make this project.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
+
+<div class="highlight highlight-text-xml"><pre>    &lt;<span class="pl-ent">dependency</span>&gt;
+        &lt;<span class="pl-ent">groupId</span>&gt;com.tvd12&lt;/<span class="pl-ent">groupId</span>&gt;
+        &lt;<span class="pl-ent">artifactId</span>&gt;ezyfox-core&lt;/<span class="pl-ent">artifactId</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;1.0.5&lt;/<span class="pl-ent">version</span>&gt;
+    &lt;/<span class="pl-ent">dependency</span>&gt;
+    &lt;<span class="pl-ent">dependency</span>&gt;
+        &lt;<span class="pl-ent">groupId</span>&gt;com.tvd12&lt;/<span class="pl-ent">groupId</span>&gt;
+        &lt;<span class="pl-ent">artifactId</span>&gt;ezyfox-sfs2x&lt;/<span class="pl-ent">artifactId</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;1.0.5&lt;/<span class="pl-ent">version</span>&gt;
+    &lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<h1>
+<a id="api-reference" class="anchor" href="#api-reference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Reference</h1>
+
+<p><a href="http://www.javadoc.io/doc/com.tvd12/ezyfox-core">http://www.javadoc.io/doc/com.tvd12/ezyfox-core</a></p>
+
+<h1>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tests</h1>
+
+<p>mvn test</p>
+
+<h1>
+<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributors</h1>
+
+<ul>
+<li>Project management 
+
+<ul>
+<li><a href="mailto:cungvinhnam@gmail.com">NamCV</a></li>
+</ul>
+</li>
+<li>Project development
+
+<ul>
+<li><a href="mailto:dungtv192@gmail.com">DungTV</a></li>
+</ul>
+</li>
+<li>Project documentation
+
+<ul>
+<li><a href="mailto:dungtv192@gmail.com">DungTV</a></li>
+<li><a href="mailto:dat.fithou@gmail.com">DatNT</a></li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
+
+<ul>
+<li>Apache License, Version 2.0</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/youngmonkeys/ezyfox">Ezyfox</a> is maintained by <a href="https://github.com/youngmonkeys">youngmonkeys</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
